@@ -1,5 +1,7 @@
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import PreTripGuide from './PreTripGuide';
 import DuringTripGuide from './DuringTripGuide';
 
@@ -13,6 +15,13 @@ const TripGuideApp = () => {
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
           Your ultimate family guide to exploring America's most amazing national parks!
         </p>
+        <div className="mt-6">
+          <Link to="/document">
+            <Button variant="outline" size="lg" className="text-lg px-8 py-3">
+              📄 Get Printable Document Version
+            </Button>
+          </Link>
+        </div>
       </div>
 
       <Tabs defaultValue="pre-trip" className="w-full">

@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import TripGuideApp from "./components/TripGuideApp";
+import DocumentVersion from "./components/DocumentVersion";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -17,6 +18,7 @@ const App = () => (
         <div className="min-h-screen bg-background">
           <Routes>
             <Route path="/" element={<TripGuideApp />} />
+            <Route path="/document" element={<DocumentVersion />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
