@@ -6,9 +6,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import IntroSection from "./components/IntroSection";
 import WildlifeSection from "./components/WildlifeSection";
 import AttractionsSection from "./components/AttractionsSection";
+import GamesActivitiesSection from "./components/GamesActivitiesSection";
+import MapSection from "./components/MapSection";
 import ItinerarySection from "./components/ItinerarySection";
 import JuniorRangerSection from "./components/JuniorRangerSection";
-import GamesActivitiesSection from "./components/GamesActivitiesSection";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +24,7 @@ const App = () => (
         <WildlifeSection />
         <AttractionsSection />
         <GamesActivitiesSection />
+        <MapSection />
         <ItinerarySection />
         <JuniorRangerSection />
           
