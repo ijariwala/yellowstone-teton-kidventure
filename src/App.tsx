@@ -8,6 +8,7 @@ import WildlifeSection from "./components/WildlifeSection";
 import AttractionsSection from "./components/AttractionsSection";
 import ItinerarySection from "./components/ItinerarySection";
 import JuniorRangerSection from "./components/JuniorRangerSection";
+import GamesActivitiesSection from "./components/GamesActivitiesSection";
 
 const queryClient = new QueryClient();
 
@@ -19,10 +20,11 @@ const App = () => (
       <div className="min-h-screen bg-background">
         <div className="container mx-auto px-4 py-8 max-w-6xl">
           <IntroSection />
-          <WildlifeSection />
-          <AttractionsSection />
-          <ItinerarySection />
-          <JuniorRangerSection />
+        <WildlifeSection />
+        <AttractionsSection />
+        <GamesActivitiesSection />
+        <ItinerarySection />
+        <JuniorRangerSection />
           
           <footer className="text-center py-8 text-muted-foreground">
             <p className="text-lg font-medium text-forest">
