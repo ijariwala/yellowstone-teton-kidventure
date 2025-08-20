@@ -3,7 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Printer, Download, ArrowLeft } from 'lucide-react';
+import { useToast } from "@/components/ui/use-toast";
+import { Printer, Download, ArrowLeft, FileText } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import yellowstoneHero from "@/assets/yellowstone-hero.jpg";
 import grandTetonHero from "@/assets/grand-teton-hero.jpg";
@@ -13,12 +14,44 @@ import bearImage from "@/assets/bear.jpg";
 import wolfImage from "@/assets/wolf.jpg";
 
 const DocumentVersion = () => {
+  const { toast } = useToast();
+  
   const handlePrint = () => {
     window.print();
   };
 
   const handleSavePDF = () => {
     window.print();
+  };
+
+  const handleSaveToGoogleDocs = async () => {
+    try {
+      // Get the document content without the controls
+      const content = document.querySelector('.max-w-4xl');
+      if (!content) return;
+      
+      // Create a clean text version
+      const textContent = content.textContent || '';
+      
+      // Copy to clipboard
+      await navigator.clipboard.writeText(textContent);
+      
+      // Open Google Docs
+      window.open('https://docs.google.com/document/create', '_blank');
+      
+      toast({
+        title: "Content copied!",
+        description: "The trip guide content has been copied to your clipboard. Paste it into the new Google Doc that just opened.",
+        duration: 5000,
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to copy content. Try using Ctrl+A and Ctrl+C to copy manually.",
+        variant: "destructive",
+        duration: 3000,
+      });
+    }
   };
 
   return (
@@ -40,6 +73,10 @@ const DocumentVersion = () => {
           <Button onClick={handleSavePDF} variant="secondary" size="sm" className="w-full">
             <Download className="h-4 w-4 mr-2" />
             Save as PDF
+          </Button>
+          <Button onClick={handleSaveToGoogleDocs} variant="outline" size="sm" className="w-full">
+            <FileText className="h-4 w-4 mr-2" />
+            Save to Google Docs
           </Button>
         </div>
       </div>
