@@ -32,30 +32,32 @@ const itineraryData: DayPlan[] = [
     location: "Grand Teton National Park",
     timeRange: "12:30 PM - 7:00 PM",
     highlights: [
-      "Land in Jackson Airport",
-      "Explore Jackson Town Square",
-      "Jackson Lake Dam scenic views",
-      "Jenny Lake boat ride or walk",
-      "Hidden Falls short hike",
-      "Chapel of the Transfiguration",
-      "Check into Grant Village",
-      "West Thumb Geyser Basin sunset walk"
+      "🏔️ Jackson Hole Airport - Gateway to Adventure (6,300 ft elevation!)",
+      "🤠 Jackson Town Square - Famous elk antler arches & boardwalks",
+      "🌊 Jackson Lake Dam - 39,000 acres of pristine mountain lake",
+      "⛵ Jenny Lake - Crown jewel with crystal clear glacial waters",
+      "💧 Hidden Falls - 200-foot cascading waterfall through the forest",
+      "⛪ Chapel of the Transfiguration - Historic 1925 log chapel with Teton backdrop",
+      "🏨 Grant Village Check-in - Your Yellowstone basecamp on Yellowstone Lake",
+      "🌋 West Thumb Geyser Basin - Unique lakeside thermal features at sunset",
+      "🌟 COOL FACT: Grand Teton (13,775 ft) means 'Big Breast' in French!",
+      "🦌 Wildlife Alert: Watch for moose, elk, and black bears in this area!"
     ],
-    funActivity: "Take a boat ride across Jenny Lake!",
+    funActivity: "Take a boat ride across Jenny Lake and look for the legendary lake trout that can grow up to 40 pounds!",
     games: [
       {
         title: "Airport Scavenger Hunt",
-        description: "Find: A cowboy hat, a bison statue, Wyoming license plate, someone with hiking boots",
+        description: "Find: A cowboy hat, a bison statue, Wyoming license plate, someone with hiking boots, and count how many people have backpacks!",
         type: "challenge"
       },
       {
         title: "Mountain Peak Spotting",
-        description: "How many mountain peaks can you see from Jackson Lake? Draw them!",
+        description: "The Teton Range has 8 peaks over 12,000 feet! How many can you see from Jackson Lake? Draw and name them!",
         type: "observation"
       },
       {
         title: "Chapel Story Time",
-        description: "Write a short story about what it would be like to get married with mountains behind you",
+        description: "Write a short story about what it would be like to get married with 13,775-foot mountains behind you. What animals might attend?",
         type: "creative"
       }
     ],
@@ -68,30 +70,32 @@ const itineraryData: DayPlan[] = [
     location: "Grand Teton National Park",
     timeRange: "8:00 AM - 4:00 PM",
     highlights: [
-      "42-mile Grand Teton Scenic Loop Drive",
-      "Jackson Lake Lodge mountain views",
-      "Signal Mountain panoramic overlook",
-      "Oxbow Bend wildlife viewing",
-      "Mormon Row historic barns",
-      "Photography opportunities",
-      "Visitor center exhibits",
-      "Return to Grant Village for relaxation"
+      "🛣️ 42-Mile Grand Teton Scenic Loop Drive - America's most spectacular mountain drive",
+      "🏨 Jackson Lake Lodge - Famous 1950s lodge with 60-foot picture windows",
+      "⛰️ Signal Mountain Summit - 800-foot climb for 360° views of Jackson Hole",
+      "🦌 Oxbow Bend - Premier wildlife viewing spot (bring binoculars!)",
+      "🏚️ Mormon Row Historic District - 1890s homestead with iconic Moulton Barns",
+      "📸 Ansel Adams Photography Spots - Where the master captured famous shots",
+      "🏛️ Craig Thomas Discovery Center - Interactive exhibits about park ecosystem",
+      "🌅 Schwabacher Landing - Perfect reflections of the Teton Range",
+      "🌟 COOL FACT: The Tetons are the youngest mountain range in the Rockies (13 million years old)!",
+      "🐻 Wildlife Hotspot: This area has the highest concentration of large mammals in the lower 48!"
     ],
-    funActivity: "Drive the complete scenic loop and count all the different animals you see!",
+    funActivity: "Complete the scenic loop and create a 'wildlife species count' - Mormon Row alone is home to over 300 species!",
     games: [
       {
-        title: "Wildlife Bingo Bonanza",
-        description: "Create bingo cards with: Moose, Elk, Bear, Eagle, Beaver, Pronghorn, Mule Deer",
+        title: "Wildlife Bingo Bonanza Plus",
+        description: "Advanced bingo: Moose, Elk, Black Bear, Bald Eagle, Great Blue Heron, Beaver, Pronghorn, Mule Deer, Mountain Goat, Coyote",
         type: "observation"
       },
       {
-        title: "Historic Barn Art Challenge",
-        description: "Sketch or photograph the Mormon Row barns, then design your own dream barn",
+        title: "Historic Barn Time Machine",
+        description: "Sketch the Mormon Row barns, then imagine: What was life like for families here in 1890? Design your homestead!",
         type: "creative"
       },
       {
-        title: "Mountain Name Game",
-        description: "Learn the names of 5 Teton peaks: Grand Teton, Mount Owen, Teewinot, Middle Teton, South Teton",
+        title: "Teton Peaks Master Challenge",
+        description: "Learn all major peaks: Grand Teton (13,775'), Mount Owen (12,928'), Teewinot (12,325'), Middle Teton (12,804'), South Teton (12,514')",
         type: "challenge"
       }
     ],
@@ -104,30 +108,32 @@ const itineraryData: DayPlan[] = [
     location: "Yellowstone - Old Faithful Area",
     timeRange: "8:00 AM - Evening",
     highlights: [
-      "Old Faithful Geyser eruption",
-      "Upper Geyser Basin exploration", 
-      "Old Faithful Visitor Center",
-      "Grand Prismatic Spring rainbow colors",
-      "Grand Prismatic Overlook Trail",
-      "Fountain Paint Pot thermal features",
-      "Biscuit Basin or Black Sand Basin",
-      "Junior Ranger activities"
+      "💥 Old Faithful Geyser - World's most famous geyser! Erupts every 60-110 minutes",
+      "🌋 Upper Geyser Basin - Largest concentration of geysers on Earth (150+ geysers!)",
+      "🏛️ Old Faithful Visitor Education Center - Learn about geothermal science",
+      "🌈 Grand Prismatic Spring - 3rd largest hot spring in the world (370°F!)",
+      "🥾 Grand Prismatic Overlook Trail - Fairy Falls Trail for aerial spring views",
+      "🎨 Fountain Paint Pot - Bubbling mud pots that look like boiling chocolate",
+      "💎 Biscuit Basin - Sapphire Pool & unique mineral formations",
+      "⚫ Black Sand Basin - Emerald Pool & Rainbow Pool thermal features",
+      "👨‍🎓 Junior Ranger Program - Earn your official Yellowstone badge!",
+      "🌟 AMAZING FACT: Grand Prismatic's colors come from heat-loving bacteria!"
     ],
-    funActivity: "Predict when Old Faithful will erupt next!",
+    funActivity: "Old Faithful shoots 3,700-8,400 gallons of boiling water 185 feet high! Time it and predict the next eruption!",
     games: [
       {
-        title: "Geyser Prediction Challenge",
-        description: "Time Old Faithful and predict the next eruption. Rangers can help with prediction windows!",
+        title: "Geyser Scientist Challenge",
+        description: "Time 3 Old Faithful eruptions. Calculate the average interval. Rangers say it's getting longer each year - why?",
         type: "challenge"
       },
       {
-        title: "Thermal Color Hunt",
-        description: "Find and photograph 7 different colors in Grand Prismatic Spring",
+        title: "Thermal Rainbow Hunt",
+        description: "Grand Prismatic shows 7 colors: deep blue center, then green, yellow, orange, red bands. Find and photograph each!",
         type: "observation"
       },
       {
-        title: "Create Your Own Geyser",
-        description: "Draw and name your own geyser. What would make it special?",
+        title: "Design Your Thermal Wonder",
+        description: "Create your own geyser, hot spring, or mud pot. What would you name it? What colors would it be? How hot?",
         type: "creative"
       }
     ],
@@ -140,30 +146,32 @@ const itineraryData: DayPlan[] = [
     location: "Yellowstone Canyon & Mammoth",
     timeRange: "7:30 AM - 5:30 PM",
     highlights: [
-      "Grand Canyon of Yellowstone",
-      "Artist Point iconic Lower Falls view",
-      "South Rim Trail easy walk",
-      "North Rim different perspectives",
-      "Hayden Valley wildlife viewing",
-      "Mud Volcano and Dragon's Mouth Spring",
-      "Mammoth Hot Springs terraces",
-      "Move to Gardiner hotel"
+      "🏔️ Grand Canyon of Yellowstone - 20 miles long, 4,000 feet wide, 1,200 feet deep!",
+      "🎨 Artist Point - Yellowstone's most photographed view (Thomas Moran painted here)",
+      "🥾 South Rim Trail - Easy 1-mile walk with multiple canyon viewpoints",
+      "🌉 North Rim Trail - Uncle Tom's Trail to base of Lower Falls (challenging!)",
+      "🦌 Hayden Valley - 'America's Serengeti' with massive bison herds",
+      "🌋 Mud Volcano Area - Churning, acidic mud pots and sulfur springs",
+      "🐉 Dragon's Mouth Spring - Roaring underground cavern with 180°F water",
+      "🏔️ Mammoth Hot Springs - Limestone terraces built over 8,000 years",
+      "🏨 Historic Mammoth Hotel - Built in 1937, where Roosevelt stayed",
+      "🌟 INCREDIBLE FACT: The canyon's colors come from iron oxidation - it's literally rusting!"
     ],
-    funActivity: "Count the different colors in the Grand Canyon walls!",
+    funActivity: "The Lower Falls drops 308 feet - that's taller than Niagara Falls! Count how many colors you see in the canyon walls!",
     games: [
       {
-        title: "Canyon Color Counting",
-        description: "How many different colors can you spot in the canyon walls? Red, yellow, orange, pink, white...",
+        title: "Canyon Geology Detective",
+        description: "Identify canyon colors and their causes: yellow (sulfur), red (iron oxide), white (silica), pink (manganese). Make a color map!",
         type: "observation"
       },
       {
-        title: "Waterfall Height Challenge",
-        description: "The Lower Falls is 308 feet tall. What else is that tall? Compare to buildings you know!",
+        title: "Waterfall Power Calculator",
+        description: "Lower Falls is 308 feet (2x taller than Niagara!). Compare to: Statue of Liberty (305'), Big Ben (316'). What else matches?",
         type: "challenge"
       },
       {
-        title: "Dragon's Mouth Story",
-        description: "Write a story about what lives in Dragon's Mouth Spring making all that noise!",
+        title: "Dragon's Mouth Adventure Story",
+        description: "Dragon's Mouth roars from underground steam. Write an adventure story: What's causing the noise? Who lives down there?",
         type: "creative"
       }
     ],
@@ -176,30 +184,32 @@ const itineraryData: DayPlan[] = [
     location: "Lamar Valley & Northern Range",
     timeRange: "7:00 AM - Evening",
     highlights: [
-      "Lamar Valley \"America's Serengeti\"",
-      "Wolf and bear spotting opportunities",
-      "Massive bison herds",
-      "Elk bugling (seasonal)",
-      "Tower Fall 132-foot waterfall",
-      "Mammoth Hot Springs terraces",
-      "Historic Fort Yellowstone",
-      "Trout Lake family hike"
+      "🦬 Lamar Valley 'America's Serengeti' - 10-mile-long wildlife paradise",
+      "🐺 Wolf Country - Home to 8+ wolf packs (Yellowstone has 95+ wolves!)",
+      "🐻 Bear Territory - Both black bears and massive grizzlies roam here",
+      "🦌 Massive Bison Herds - Up to 1,000 bison gather here in summer",
+      "🦴 Elk Bugling Grounds - Hear males call during mating season",
+      "💧 Tower Fall - 132-foot waterfall named for volcanic rock towers",
+      "🏔️ Mammoth Hot Springs Historic District - Terraced limestone formations",
+      "🏛️ Historic Fort Yellowstone - 1891 cavalry post, now park headquarters",
+      "🎣 Trout Lake - Easy 1.2-mile hike to pristine fishing lake",
+      "🌟 WILD FACT: Lamar Valley has the world's largest free-roaming bison herd!"
     ],
-    funActivity: "Become a wildlife tracker and record every animal you see!",
+    funActivity: "Early morning wildlife safari! 6 AM is prime time - wolves, bears, and bison are most active at dawn!",
     games: [
       {
-        title: "Wildlife Tracker Certification",
-        description: "Keep a detailed log: animal type, time spotted, behavior, number seen",
+        title: "Wildlife Biologist Challenge",
+        description: "Track like a scientist: animal type, exact time, behavior, group size, location. Use binoculars like a pro researcher!",
         type: "observation"
       },
       {
-        title: "Bison Herd Count Challenge",
-        description: "Work as a family to count a bison herd. Who gets closest to the real number?",
+        title: "Bison Math Safari",
+        description: "Yellowstone has 4,000+ bison! Count a herd, estimate others. Can you spot calves (they're orange-red until 3 months old)?",
         type: "challenge"
       },
       {
-        title: "Animal Sound Symphony",
-        description: "Record or imitate animal sounds you hear: elk bugles, wolf howls, bird calls",
+        title: "Wilderness Sound Map",
+        description: "Create an audio diary: elk bugles, wolf howls, bison grunts, bird calls. Each animal has a unique 'voice'!",
         type: "creative"
       }
     ],
@@ -212,30 +222,32 @@ const itineraryData: DayPlan[] = [
     location: "Roosevelt Arch & Museum of the Rockies",
     timeRange: "9:00 AM - 3:08 PM Flight",
     highlights: [
-      "Roosevelt Arch historic entrance",
-      "\"For the Benefit and Enjoyment of the People\"",
-      "Family photos at the arch",
-      "Drive to Bozeman",
-      "Museum of the Rockies highlights",
-      "T. Rex and Triceratops exhibits",
-      "Interactive dinosaur discovery",
-      "Final souvenir shopping"
+      "🏛️ Roosevelt Arch - Yellowstone's iconic stone entrance (built 1903)",
+      "📜 'For the Benefit and Enjoyment of the People' - Democracy in stone!",
+      "📸 Family Photos - Stand where millions have marked their Yellowstone adventure",
+      "🛣️ Scenic Drive to Bozeman - Through Paradise Valley & Livingston",
+      "🦴 Museum of the Rockies - World's largest T. Rex collection!",
+      "🦕 'Big Mike' T. Rex - 40-foot-long, 12-foot-tall authentic skeleton",
+      "🥚 Egg Mountain - Real dinosaur eggs and babies fossilized together",
+      "🔬 Paleontology Lab - Watch scientists preparing real fossils",
+      "🌟 Jack Horner Connection - Advisor for Jurassic Park movies worked here!",
+      "🎁 Montana Gift Shop - Last chance for unique Yellowstone & Montana treasures"
     ],
-    funActivity: "Become a paleontologist at the Museum of the Rockies!",
+    funActivity: "Compare the T. Rex to animals you saw - a T. Rex was 13 feet tall and 40 feet long, while bison are 6 feet tall!",
     games: [
       {
-        title: "Arch History Detective",
-        description: "Find out: When was the arch built? Who was Roosevelt? Why is this inscription important?",
+        title: "Roosevelt Legacy Detective",
+        description: "Research: Built 1903, dedicated by President Roosevelt, cornerstone of conservation. Why was this arch revolutionary for America?",
         type: "challenge"
       },
       {
-        title: "Dinosaur vs Park Animals",
-        description: "Compare dinosaurs to animals you saw in the parks. Which is bigger/smaller/faster?",
+        title: "Dinosaur vs Wildlife Comparison",
+        description: "T. Rex vs Grizzly Bear, Triceratops vs Bison, Pteranodon vs Bald Eagle. Create size charts and compare abilities!",
         type: "observation"
       },
       {
-        title: "Trip Memory Book",
-        description: "Create a final page in your journal with your top 5 favorite moments",
+        title: "Ultimate Adventure Memory Book",
+        description: "Final masterpiece: Top 5 moments, favorite animal, biggest surprise, funniest memory, and what you'll tell friends!",
         type: "creative"
       }
     ],
