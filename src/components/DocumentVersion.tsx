@@ -1,7 +1,10 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { Printer, Download, ArrowLeft } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import yellowstoneHero from "@/assets/yellowstone-hero.jpg";
 import grandTetonHero from "@/assets/grand-teton-hero.jpg";
 import bisonImage from "@/assets/bison.jpg";
@@ -10,8 +13,36 @@ import bearImage from "@/assets/bear.jpg";
 import wolfImage from "@/assets/wolf.jpg";
 
 const DocumentVersion = () => {
+  const handlePrint = () => {
+    window.print();
+  };
+
+  const handleSavePDF = () => {
+    window.print();
+  };
+
   return (
     <div className="max-w-4xl mx-auto p-8 bg-background print:p-4 print:max-w-none">
+      
+      {/* Print Controls - Hidden when printing */}
+      <div className="fixed top-4 right-4 z-50 print:hidden">
+        <div className="flex flex-col gap-2 bg-background border rounded-lg p-2 shadow-lg">
+          <Link to="/">
+            <Button variant="outline" size="sm" className="w-full">
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back to Guide
+            </Button>
+          </Link>
+          <Button onClick={handlePrint} variant="default" size="sm" className="w-full">
+            <Printer className="h-4 w-4 mr-2" />
+            Print Document
+          </Button>
+          <Button onClick={handleSavePDF} variant="secondary" size="sm" className="w-full">
+            <Download className="h-4 w-4 mr-2" />
+            Save as PDF
+          </Button>
+        </div>
+      </div>
       
       {/* Cover Page */}
       <div className="text-center mb-12 print:mb-8">
