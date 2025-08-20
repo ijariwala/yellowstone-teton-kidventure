@@ -18,6 +18,9 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        adventure: "bg-gradient-adventure text-primary-foreground hover:scale-105 shadow-adventure transition-all duration-300",
+        forest: "bg-forest text-primary-foreground hover:bg-forest-dark shadow-card-adventure transition-all duration-300",
+        mountain: "bg-mountain text-primary-foreground hover:bg-mountain-light transition-all duration-300",
       },
       size: {
         default: "h-10 px-4 py-2",

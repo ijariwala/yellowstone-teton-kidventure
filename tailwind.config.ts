@@ -52,6 +52,24 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				// Adventure theme colors
+				forest: {
+					DEFAULT: 'hsl(var(--forest))',
+					light: 'hsl(var(--forest-light))',
+					dark: 'hsl(var(--forest-dark))'
+				},
+				mountain: {
+					DEFAULT: 'hsl(var(--mountain))',
+					light: 'hsl(var(--mountain-light))'
+				},
+				sunset: {
+					DEFAULT: 'hsl(var(--sunset))',
+					light: 'hsl(var(--sunset-light))'
+				},
+				sky: {
+					DEFAULT: 'hsl(var(--sky))',
+					dark: 'hsl(var(--sky-dark))'
+				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
@@ -63,10 +81,22 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				}
 			},
+			backgroundImage: {
+				'gradient-hero': 'var(--gradient-hero)',
+				'gradient-card': 'var(--gradient-card)',
+				'gradient-adventure': 'var(--gradient-adventure)'
+			},
+			boxShadow: {
+				'adventure': 'var(--shadow-adventure)',
+				'card-adventure': 'var(--shadow-card)'
+			},
 			borderRadius: {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
+			},
+			transitionTimingFunction: {
+				'smooth': 'cubic-bezier(0.4, 0, 0.2, 1)'
 			},
 			keyframes: {
 				'accordion-down': {

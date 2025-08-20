@@ -8,35 +8,61 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 45 15% 97%;
+    --foreground: 25 20% 15%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 25 20% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 25 20% 15%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 142 76% 36%;
+    --primary-foreground: 0 0% 98%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 200 30% 92%;
+    --secondary-foreground: 25 20% 15%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 45 15% 94%;
+    --muted-foreground: 25 10% 45%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 35 85% 55%;
+    --accent-foreground: 0 0% 98%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 45 15% 88%;
+    --input: 45 15% 88%;
+    --ring: 142 76% 36%;
 
-    --radius: 0.5rem;
+    --radius: 1rem;
+
+    /* Adventure theme colors */
+    --forest: 142 76% 36%;
+    --forest-light: 142 60% 50%;
+    --forest-dark: 142 85% 25%;
+    
+    --mountain: 200 25% 35%;
+    --mountain-light: 200 20% 50%;
+    
+    --sunset: 35 85% 55%;
+    --sunset-light: 35 75% 65%;
+    
+    --sky: 200 100% 85%;
+    --sky-dark: 200 80% 70%;
+    
+    /* Gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(var(--forest)) 0%, hsl(var(--mountain)) 50%, hsl(var(--sky)) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(var(--background)) 0%, hsl(var(--muted)) 100%);
+    --gradient-adventure: linear-gradient(120deg, hsl(var(--sunset)) 0%, hsl(var(--forest)) 100%);
+    
+    /* Shadows */
+    --shadow-adventure: 0 10px 40px -12px hsl(var(--forest) / 0.3);
+    --shadow-card: 0 4px 20px -8px hsl(var(--mountain) / 0.2);
+    
+    /* Animation */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     --sidebar-background: 0 0% 98%;
 
