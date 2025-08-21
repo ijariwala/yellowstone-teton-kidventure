@@ -60,23 +60,25 @@ const DocumentVersion = () => {
       const buttonElements = clonedContent.querySelectorAll('button');
       buttonElements.forEach(el => el.remove());
       
-      // Get clean text content and format it properly for Google Docs
+      // Get clean text content by preserving structure
       const textContent = clonedContent.textContent || '';
       console.log('Raw text content length:', textContent.length);
       console.log('First 200 chars:', textContent.substring(0, 200));
       
-      // Create a simple, clean structure that Google Docs can handle
-      const lines = textContent
-        .split('\n')
-        .map(line => line.trim())
-        .filter(line => line.length > 0)
-        .filter(line => !line.includes('Print Document') && !line.includes('Save as PDF') && !line.includes('Back to Guide'));
+      // Instead of filtering by lines, format the content properly
+      // Remove extra whitespace and format for readability
+      const formattedContent = textContent
+        .replace(/\s+/g, ' ') // Replace multiple spaces/newlines with single space
+        .replace(/([.!?])\s+/g, '$1\n\n') // Add line breaks after sentences
+        .replace(/([📋🌋🦌🏔️⛰️🔍🎯🎮🏅📅🎒🌡️🐺💎])/g, '\n$1') // Add line breaks before emojis
+        .replace(/Table of Contents/g, '\n\nTable of Contents\n')
+        .replace(/(Pre-Trip Planning|During Your Trip|Amazing Animals|Amazing Places|Daily Adventures|Games & Activities|Junior Ranger|Packing Checklist)/g, '\n\n$1\n')
+        .replace(/^\s+/gm, '') // Remove leading spaces from lines
+        .replace(/\n{3,}/g, '\n\n') // Replace multiple line breaks with double
+        .trim();
       
-      console.log('Filtered lines count:', lines.length);
-      console.log('First few lines:', lines.slice(0, 5));
-      
-      const formattedContent = lines.join('\n\n');
       console.log('Final formatted content length:', formattedContent.length);
+      console.log('Content preview:', formattedContent.substring(0, 500));
       
       if (!formattedContent.trim()) {
         console.log('No content to copy!');
