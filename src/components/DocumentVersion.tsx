@@ -26,8 +26,13 @@ const DocumentVersion = () => {
 
   const handleSaveToGoogleDocs = async () => {
     try {
+      console.log('Starting Google Docs save...');
+      
       // Get the document content without the controls
       const contentElement = document.querySelector('.max-w-4xl');
+      console.log('Content element found:', !!contentElement);
+      console.log('Content element HTML length:', contentElement?.innerHTML?.length || 0);
+      console.log('Content element text length:', contentElement?.textContent?.length || 0);
       
       if (!contentElement) {
         toast({
@@ -57,6 +62,8 @@ const DocumentVersion = () => {
       
       // Get clean text content and format it properly for Google Docs
       const textContent = clonedContent.textContent || '';
+      console.log('Raw text content length:', textContent.length);
+      console.log('First 200 chars:', textContent.substring(0, 200));
       
       // Create a simple, clean structure that Google Docs can handle
       const lines = textContent
@@ -65,9 +72,14 @@ const DocumentVersion = () => {
         .filter(line => line.length > 0)
         .filter(line => !line.includes('Print Document') && !line.includes('Save as PDF') && !line.includes('Back to Guide'));
       
+      console.log('Filtered lines count:', lines.length);
+      console.log('First few lines:', lines.slice(0, 5));
+      
       const formattedContent = lines.join('\n\n');
+      console.log('Final formatted content length:', formattedContent.length);
       
       if (!formattedContent.trim()) {
+        console.log('No content to copy!');
         toast({
           title: "Error",
           description: "No content found to copy. Please try refreshing the page.",
@@ -78,13 +90,14 @@ const DocumentVersion = () => {
       
       // Copy to clipboard as plain text (Google Docs handles this better)
       await navigator.clipboard.writeText(formattedContent);
+      console.log('Content successfully copied to clipboard');
       
       // Open Google Docs
       window.open('https://docs.google.com/document/create', '_blank');
       
       toast({
         title: "Content copied successfully!",
-        description: "The trip guide has been copied to your clipboard. Paste it into the new Google Doc using Ctrl+V (or Cmd+V on Mac).",
+        description: `${Math.floor(formattedContent.length / 1000)}k characters copied to clipboard. Paste into the new Google Doc with Ctrl+V.`,
         duration: 6000,
       });
     } catch (error) {
