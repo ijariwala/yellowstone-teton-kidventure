@@ -26,14 +26,15 @@ const DocumentVersion = () => {
 
   const handleSaveToGoogleDocs = async () => {
     try {
-      console.log('Starting Google Docs save process...');
-      
       // Get the document content without the controls
       const contentElement = document.querySelector('.max-w-4xl');
-      console.log('Found content element:', !!contentElement);
       
       if (!contentElement) {
-        console.log('No content element found');
+        toast({
+          title: "Error",
+          description: "No content found to copy. Please try refreshing the page.",
+          variant: "destructive",
+        });
         return;
       }
       
@@ -46,34 +47,51 @@ const DocumentVersion = () => {
         printControls.remove();
       }
       
-      console.log('Text content length:', clonedContent.textContent?.length);
-      console.log('HTML content length:', clonedContent.innerHTML.length);
-      
-      // Simple approach - just copy the text content with basic formatting
-      const textContent = clonedContent.textContent || '';
-      console.log('About to copy text content:', textContent.substring(0, 200) + '...');
-      
-      if (!textContent.trim()) {
-        console.log('No text content found!');
-        toast({
-          title: "Error",
-          description: "No content found to copy. Please try refreshing the page.",
-          variant: "destructive",
+      // Create properly formatted HTML that Google Docs can understand
+      const formattedHTML = clonedContent.innerHTML
+        // Clean up unnecessary attributes and classes
+        .replace(/class="[^"]*"/g, '')
+        .replace(/style="[^"]*"/g, '')
+        // Convert headings to proper HTML headings
+        .replace(/<h1[^>]*>/g, '<h1>')
+        .replace(/<h2[^>]*>/g, '<h2>')
+        .replace(/<h3[^>]*>/g, '<h3>')
+        .replace(/<h4[^>]*>/g, '<h4>')
+        // Convert paragraphs
+        .replace(/<p[^>]*>/g, '<p>')
+        // Convert lists
+        .replace(/<ul[^>]*>/g, '<ul>')
+        .replace(/<ol[^>]*>/g, '<ol>')
+        .replace(/<li[^>]*>/g, '<li>')
+        // Convert divs to paragraphs for better formatting
+        .replace(/<div[^>]*>/g, '<p>')
+        .replace(/<\/div>/g, '</p>')
+        // Remove extra styling elements
+        .replace(/<span[^>]*>/g, '')
+        .replace(/<\/span>/g, '')
+        .replace(/<img[^>]*>/g, '')
+        .replace(/<svg[^>]*>.*?<\/svg>/g, '');
+
+      // Try to copy as rich HTML first, with plain text fallback
+      try {
+        const clipboardItem = new ClipboardItem({
+          'text/html': new Blob([formattedHTML], { type: 'text/html' }),
+          'text/plain': new Blob([clonedContent.textContent || ''], { type: 'text/plain' })
         });
-        return;
+        await navigator.clipboard.write([clipboardItem]);
+      } catch {
+        // If rich text fails, copy as plain text but with better formatting
+        const formattedText = clonedContent.textContent || '';
+        await navigator.clipboard.writeText(formattedText);
       }
-      
-      // Copy to clipboard
-      await navigator.clipboard.writeText(textContent);
-      console.log('Successfully copied to clipboard');
       
       // Open Google Docs
       window.open('https://docs.google.com/document/create', '_blank');
       
       toast({
-        title: "Content copied!",
-        description: "The trip guide content has been copied to your clipboard. Paste it into the new Google Doc that just opened.",
-        duration: 5000,
+        title: "Content copied with formatting!",
+        description: "The trip guide has been copied with formatting preserved. Paste it into the new Google Doc that just opened using Ctrl+V.",
+        duration: 6000,
       });
     } catch (error) {
       console.error('Error in handleSaveToGoogleDocs:', error);
