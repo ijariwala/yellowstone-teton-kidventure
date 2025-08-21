@@ -41,63 +41,57 @@ const DocumentVersion = () => {
       // Clone the content to avoid modifying the original
       const clonedContent = contentElement.cloneNode(true) as HTMLElement;
       
-      // Remove the print controls
+      // Remove the print controls and any hidden elements
       const printControls = clonedContent.querySelector('.print\\:hidden');
       if (printControls) {
         printControls.remove();
       }
       
-      // Create properly formatted HTML that Google Docs can understand
-      const formattedHTML = clonedContent.innerHTML
-        // Clean up unnecessary attributes and classes
-        .replace(/class="[^"]*"/g, '')
-        .replace(/style="[^"]*"/g, '')
-        // Convert headings to proper HTML headings
-        .replace(/<h1[^>]*>/g, '<h1>')
-        .replace(/<h2[^>]*>/g, '<h2>')
-        .replace(/<h3[^>]*>/g, '<h3>')
-        .replace(/<h4[^>]*>/g, '<h4>')
-        // Convert paragraphs
-        .replace(/<p[^>]*>/g, '<p>')
-        // Convert lists
-        .replace(/<ul[^>]*>/g, '<ul>')
-        .replace(/<ol[^>]*>/g, '<ol>')
-        .replace(/<li[^>]*>/g, '<li>')
-        // Convert divs to paragraphs for better formatting
-        .replace(/<div[^>]*>/g, '<p>')
-        .replace(/<\/div>/g, '</p>')
-        // Remove extra styling elements
-        .replace(/<span[^>]*>/g, '')
-        .replace(/<\/span>/g, '')
-        .replace(/<img[^>]*>/g, '')
-        .replace(/<svg[^>]*>.*?<\/svg>/g, '');
-
-      // Try to copy as rich HTML first, with plain text fallback
-      try {
-        const clipboardItem = new ClipboardItem({
-          'text/html': new Blob([formattedHTML], { type: 'text/html' }),
-          'text/plain': new Blob([clonedContent.textContent || ''], { type: 'text/plain' })
+      // Remove fixed elements like the floating controls
+      const fixedElements = clonedContent.querySelectorAll('.fixed');
+      fixedElements.forEach(el => el.remove());
+      
+      // Also remove any button elements that might interfere
+      const buttonElements = clonedContent.querySelectorAll('button');
+      buttonElements.forEach(el => el.remove());
+      
+      // Get clean text content and format it properly for Google Docs
+      const textContent = clonedContent.textContent || '';
+      
+      // Create a simple, clean structure that Google Docs can handle
+      const lines = textContent
+        .split('\n')
+        .map(line => line.trim())
+        .filter(line => line.length > 0)
+        .filter(line => !line.includes('Print Document') && !line.includes('Save as PDF') && !line.includes('Back to Guide'));
+      
+      const formattedContent = lines.join('\n\n');
+      
+      if (!formattedContent.trim()) {
+        toast({
+          title: "Error",
+          description: "No content found to copy. Please try refreshing the page.",
+          variant: "destructive",
         });
-        await navigator.clipboard.write([clipboardItem]);
-      } catch {
-        // If rich text fails, copy as plain text but with better formatting
-        const formattedText = clonedContent.textContent || '';
-        await navigator.clipboard.writeText(formattedText);
+        return;
       }
+      
+      // Copy to clipboard as plain text (Google Docs handles this better)
+      await navigator.clipboard.writeText(formattedContent);
       
       // Open Google Docs
       window.open('https://docs.google.com/document/create', '_blank');
       
       toast({
-        title: "Content copied with formatting!",
-        description: "The trip guide has been copied with formatting preserved. Paste it into the new Google Doc that just opened using Ctrl+V.",
+        title: "Content copied successfully!",
+        description: "The trip guide has been copied to your clipboard. Paste it into the new Google Doc using Ctrl+V (or Cmd+V on Mac).",
         duration: 6000,
       });
     } catch (error) {
       console.error('Error in handleSaveToGoogleDocs:', error);
       toast({
         title: "Error",
-        description: "Failed to copy content. Try using Ctrl+A and Ctrl+C to copy manually.",
+        description: "Failed to copy content. Please try using Ctrl+A and Ctrl+C to copy manually.",
         variant: "destructive",
         duration: 3000,
       });
