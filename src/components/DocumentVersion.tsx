@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { Printer, Download, ArrowLeft, FileText } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import yellowstoneHero from "@/assets/yellowstone-hero.jpg";
@@ -26,9 +26,16 @@ const DocumentVersion = () => {
 
   const handleSaveToGoogleDocs = async () => {
     try {
+      console.log('Starting Google Docs save process...');
+      
       // Get the document content without the controls
       const contentElement = document.querySelector('.max-w-4xl');
-      if (!contentElement) return;
+      console.log('Found content element:', !!contentElement);
+      
+      if (!contentElement) {
+        console.log('No content element found');
+        return;
+      }
       
       // Clone the content to avoid modifying the original
       const clonedContent = contentElement.cloneNode(true) as HTMLElement;
@@ -39,30 +46,37 @@ const DocumentVersion = () => {
         printControls.remove();
       }
       
-      // Create rich HTML content that Google Docs can understand
-      const htmlContent = clonedContent.innerHTML;
+      console.log('Text content length:', clonedContent.textContent?.length);
+      console.log('HTML content length:', clonedContent.innerHTML.length);
       
-      // Try to copy as rich text first (HTML), fallback to plain text
-      try {
-        const clipboardItem = new ClipboardItem({
-          'text/html': new Blob([htmlContent], { type: 'text/html' }),
-          'text/plain': new Blob([clonedContent.textContent || ''], { type: 'text/plain' })
+      // Simple approach - just copy the text content with basic formatting
+      const textContent = clonedContent.textContent || '';
+      console.log('About to copy text content:', textContent.substring(0, 200) + '...');
+      
+      if (!textContent.trim()) {
+        console.log('No text content found!');
+        toast({
+          title: "Error",
+          description: "No content found to copy. Please try refreshing the page.",
+          variant: "destructive",
         });
-        await navigator.clipboard.write([clipboardItem]);
-      } catch {
-        // Fallback to plain text if rich text fails
-        await navigator.clipboard.writeText(clonedContent.textContent || '');
+        return;
       }
+      
+      // Copy to clipboard
+      await navigator.clipboard.writeText(textContent);
+      console.log('Successfully copied to clipboard');
       
       // Open Google Docs
       window.open('https://docs.google.com/document/create', '_blank');
       
       toast({
-        title: "Content copied with formatting!",
-        description: "The trip guide has been copied with formatting preserved. Paste it into the new Google Doc that just opened.",
+        title: "Content copied!",
+        description: "The trip guide content has been copied to your clipboard. Paste it into the new Google Doc that just opened.",
         duration: 5000,
       });
     } catch (error) {
+      console.error('Error in handleSaveToGoogleDocs:', error);
       toast({
         title: "Error",
         description: "Failed to copy content. Try using Ctrl+A and Ctrl+C to copy manually.",
