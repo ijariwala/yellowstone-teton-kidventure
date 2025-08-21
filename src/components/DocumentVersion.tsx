@@ -27,21 +27,39 @@ const DocumentVersion = () => {
   const handleSaveToGoogleDocs = async () => {
     try {
       // Get the document content without the controls
-      const content = document.querySelector('.max-w-4xl');
-      if (!content) return;
+      const contentElement = document.querySelector('.max-w-4xl');
+      if (!contentElement) return;
       
-      // Create a clean text version
-      const textContent = content.textContent || '';
+      // Clone the content to avoid modifying the original
+      const clonedContent = contentElement.cloneNode(true) as HTMLElement;
       
-      // Copy to clipboard
-      await navigator.clipboard.writeText(textContent);
+      // Remove the print controls
+      const printControls = clonedContent.querySelector('.print\\:hidden');
+      if (printControls) {
+        printControls.remove();
+      }
+      
+      // Create rich HTML content that Google Docs can understand
+      const htmlContent = clonedContent.innerHTML;
+      
+      // Try to copy as rich text first (HTML), fallback to plain text
+      try {
+        const clipboardItem = new ClipboardItem({
+          'text/html': new Blob([htmlContent], { type: 'text/html' }),
+          'text/plain': new Blob([clonedContent.textContent || ''], { type: 'text/plain' })
+        });
+        await navigator.clipboard.write([clipboardItem]);
+      } catch {
+        // Fallback to plain text if rich text fails
+        await navigator.clipboard.writeText(clonedContent.textContent || '');
+      }
       
       // Open Google Docs
       window.open('https://docs.google.com/document/create', '_blank');
       
       toast({
-        title: "Content copied!",
-        description: "The trip guide content has been copied to your clipboard. Paste it into the new Google Doc that just opened.",
+        title: "Content copied with formatting!",
+        description: "The trip guide has been copied with formatting preserved. Paste it into the new Google Doc that just opened.",
         duration: 5000,
       });
     } catch (error) {
