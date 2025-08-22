@@ -92,18 +92,41 @@ const DocumentVersion = () => {
         });
         return;
       }
-      
-      // Copy to clipboard as plain text (Google Docs handles this better)
-      await navigator.clipboard.writeText(formattedContent);
-      console.log('Content successfully copied to clipboard');
-      
+
+      // Create simple HTML that Google Docs can definitely handle
+      const htmlContent = `<div>
+        <h1>🏔️ Ultimate Yellowstone & Grand Teton Family Adventure Guide 🦌</h1>
+        <p>Your Complete 6-Day Journey Through America's Most Amazing National Parks</p>
+        <br>
+        ${formattedContent.split('\n\n').map(section => {
+          if (section.includes('Table of Contents') || section.includes('Pre-Trip Planning') || section.includes('During Your Trip')) {
+            return `<h2>${section.trim()}</h2>`;
+          }
+          return `<p>${section.trim()}</p>`;
+        }).join('\n')}
+      </div>`;
+
+      // Try copying as both HTML and plain text
+      try {
+        const clipboardItem = new ClipboardItem({
+          'text/html': new Blob([htmlContent], { type: 'text/html' }),
+          'text/plain': new Blob([formattedContent], { type: 'text/plain' })
+        });
+        await navigator.clipboard.write([clipboardItem]);
+        console.log('Content copied as both HTML and plain text');
+      } catch (htmlError) {
+        console.log('HTML copy failed, trying plain text only:', htmlError);
+        await navigator.clipboard.writeText(formattedContent);
+        console.log('Content copied as plain text only');
+      }
+
       // Open Google Docs
       window.open('https://docs.google.com/document/create', '_blank');
       
       toast({
         title: "Content copied successfully!",
-        description: `${Math.floor(formattedContent.length / 1000)}k characters copied to clipboard. Paste into the new Google Doc with Ctrl+V.`,
-        duration: 6000,
+        description: `${Math.floor(formattedContent.length / 1000)}k characters copied. In Google Docs, try both Ctrl+V and Ctrl+Shift+V (paste without formatting) to see which works better.`,
+        duration: 8000,
       });
     } catch (error) {
       console.error('Error in handleSaveToGoogleDocs:', error);
