@@ -154,7 +154,15 @@ const DocumentVersion = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-8 bg-background print:p-4 print:max-w-none">
+    <>
+      <style>{`
+        @media print {
+          .page-break-before { page-break-before: always; }
+          .page-break-after { page-break-after: always; }
+          .page-break-avoid { page-break-inside: avoid; }
+        }
+      `}</style>
+      <div className="max-w-4xl mx-auto p-8 bg-background print:p-4 print:max-w-none">
       
       {/* Print Controls - Hidden when printing */}
       <div className="fixed top-4 right-4 z-50 print:hidden">
@@ -231,10 +239,10 @@ const DocumentVersion = () => {
         </CardContent>
       </Card>
 
-      <Separator className="my-8 print:my-4" />
+      <Separator className="my-8 print:my-4 print:page-break-before" />
 
       {/* Section 1: Park Overview */}
-      <section className="mb-12 print:mb-8">
+      <section className="mb-12 print:mb-8 print:page-break-before">>
         <h1 className="text-3xl font-bold text-center mb-8 text-foreground">🌋 Welcome to Your Amazing Adventure!</h1>
         
         <div className="grid md:grid-cols-2 gap-8 mb-8">
@@ -821,6 +829,7 @@ const DocumentVersion = () => {
         </Card>
       </footer>
     </div>
+    </>
   );
 };
 
