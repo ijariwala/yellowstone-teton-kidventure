@@ -93,23 +93,43 @@ const DocumentVersion = () => {
         return;
       }
 
-      // Create simple HTML that Google Docs can definitely handle
-      const htmlContent = `<div>
-        <h1>🏔️ Ultimate Yellowstone & Grand Teton Family Adventure Guide 🦌</h1>
-        <p>Your Complete 6-Day Journey Through America's Most Amazing National Parks</p>
-        <br>
-        ${formattedContent.split('\n\n').map(section => {
-          if (section.includes('Table of Contents') || section.includes('Pre-Trip Planning') || section.includes('During Your Trip')) {
-            return `<h2>${section.trim()}</h2>`;
-          }
-          return `<p>${section.trim()}</p>`;
-        }).join('\n')}
-      </div>`;
+      // Create rich HTML that preserves the document structure and formatting
+      const sections = formattedContent.split('\n\n');
+      let htmlContent = '';
+      
+      for (const section of sections) {
+        const trimmed = section.trim();
+        if (!trimmed) continue;
+        
+        if (trimmed.includes('Ultimate Yellowstone & Grand Teton Family Adventure Guide')) {
+          htmlContent += `<h1 style="text-align: center; font-size: 24px; font-weight: bold; color: #2563eb; margin: 20px 0;">${trimmed}</h1>`;
+        } else if (trimmed.includes('Your Complete 6-Day Journey')) {
+          htmlContent += `<p style="text-align: center; font-size: 18px; color: #6b7280; margin: 10px 0;">${trimmed}</p>`;
+        } else if (trimmed.includes('Table of Contents')) {
+          htmlContent += `<h2 style="font-size: 20px; font-weight: bold; color: #059669; margin: 20px 0 10px 0; border-bottom: 2px solid #d1fae5; padding-bottom: 5px;">${trimmed}</h2>`;
+        } else if (trimmed.includes('Pre-Trip Planning') || trimmed.includes('During Your Trip')) {
+          htmlContent += `<h2 style="font-size: 20px; font-weight: bold; color: #059669; margin: 20px 0 10px 0;">${trimmed}</h2>`;
+        } else if (trimmed.includes('Welcome to Your Amazing Adventure') || trimmed.includes('Amazing Animals') || trimmed.includes('Amazing Places')) {
+          htmlContent += `<h2 style="font-size: 20px; font-weight: bold; color: #dc2626; margin: 20px 0 10px 0;">${trimmed}</h2>`;
+        } else if (trimmed.startsWith('•')) {
+          htmlContent += `<ul style="margin: 5px 0 5px 20px;"><li style="margin: 3px 0;">${trimmed.substring(1).trim()}</li></ul>`;
+        } else if (trimmed.includes('Day ') && trimmed.includes(':')) {
+          htmlContent += `<h3 style="font-size: 18px; font-weight: bold; color: #7c3aed; margin: 15px 0 8px 0;">${trimmed}</h3>`;
+        } else {
+          htmlContent += `<p style="margin: 8px 0; line-height: 1.6;">${trimmed}</p>`;
+        }
+      }
+      
+      const fullHtmlContent = `
+        <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px;">
+          ${htmlContent}
+        </div>
+      `;
 
       // Try copying as both HTML and plain text
       try {
         const clipboardItem = new ClipboardItem({
-          'text/html': new Blob([htmlContent], { type: 'text/html' }),
+          'text/html': new Blob([fullHtmlContent], { type: 'text/html' }),
           'text/plain': new Blob([formattedContent], { type: 'text/plain' })
         });
         await navigator.clipboard.write([clipboardItem]);
