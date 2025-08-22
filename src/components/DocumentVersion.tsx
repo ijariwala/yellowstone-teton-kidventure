@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
-import { Printer, Download, ArrowLeft, FileText } from 'lucide-react';
+import { Printer, Download, ArrowLeft, FileText, Plus, Scissors, FileDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { Document, Packer, Paragraph, TextRun, HeadingLevel } from 'docx';
+import { saveAs } from 'file-saver';
 import yellowstoneHero from "@/assets/yellowstone-hero.jpg";
 import grandTetonHero from "@/assets/grand-teton-hero.jpg";
 import bisonImage from "@/assets/bison.jpg";
@@ -15,6 +17,9 @@ import wolfImage from "@/assets/wolf.jpg";
 
 const DocumentVersion = () => {
   const { toast } = useToast();
+  const [pageBreaks, setPageBreaks] = useState<number[]>([]);
+  const [editMode, setEditMode] = useState(false);
+  const documentRef = useRef<HTMLDivElement>(null);
   
   const handlePrint = () => {
     window.print();
@@ -153,6 +158,154 @@ const DocumentVersion = () => {
     }
   };
 
+  // Manual Page Break Controls
+  const addPageBreak = (index: number) => {
+    setPageBreaks(prev => [...prev, index].sort((a, b) => a - b));
+    toast({
+      title: "Page break added!",
+      description: "A page break will appear at this location when printing.",
+    });
+  };
+
+  const removePageBreak = (index: number) => {
+    setPageBreaks(prev => prev.filter(pb => pb !== index));
+    toast({
+      title: "Page break removed!",
+      description: "The page break has been removed.",
+    });
+  };
+
+  // Alternative Export Formats
+  const handleSaveAsWord = async () => {
+    try {
+      const contentElement = document.querySelector('.max-w-4xl');
+      if (!contentElement) return;
+
+      // Extract text content
+      const textContent = contentElement.textContent || '';
+      const sections = textContent.split('\n\n').filter(s => s.trim());
+
+      // Create Word document
+      const doc = new Document({
+        sections: [{
+          properties: {},
+          children: sections.map(section => {
+            const trimmed = section.trim();
+            if (trimmed.includes('Ultimate Yellowstone') || trimmed.includes('Amazing Adventure')) {
+              return new Paragraph({
+                children: [new TextRun({ text: trimmed, bold: true, size: 32 })],
+                heading: HeadingLevel.HEADING_1,
+              });
+            } else if (trimmed.includes('Table of Contents') || trimmed.includes('Pre-Trip') || trimmed.includes('During Your Trip')) {
+              return new Paragraph({
+                children: [new TextRun({ text: trimmed, bold: true, size: 24 })],
+                heading: HeadingLevel.HEADING_2,
+              });
+            } else {
+              return new Paragraph({
+                children: [new TextRun({ text: trimmed })],
+              });
+            }
+          }),
+        }],
+      });
+
+      const buffer = await Packer.toBuffer(doc);
+      saveAs(new Blob([buffer]), 'Yellowstone-Grand-Teton-Guide.docx');
+      
+      toast({
+        title: "Word document saved!",
+        description: "Your trip guide has been downloaded as a Word document.",
+      });
+    } catch (error) {
+      console.error('Error creating Word document:', error);
+      toast({
+        title: "Error",
+        description: "Failed to create Word document. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleSaveAsRTF = () => {
+    try {
+      const contentElement = document.querySelector('.max-w-4xl');
+      if (!contentElement) return;
+
+      const textContent = contentElement.textContent || '';
+      
+      // Create RTF content
+      const rtfContent = `{\\rtf1\\ansi\\deff0 {\\fonttbl {\\f0 Times New Roman;}}
+        \\f0\\fs24
+        ${textContent.replace(/\n/g, '\\par ')}}`;
+
+      const blob = new Blob([rtfContent], { type: 'application/rtf' });
+      saveAs(blob, 'Yellowstone-Grand-Teton-Guide.rtf');
+      
+      toast({
+        title: "RTF document saved!",
+        description: "Your trip guide has been downloaded as an RTF document.",
+      });
+    } catch (error) {
+      console.error('Error creating RTF:', error);
+      toast({
+        title: "Error",
+        description: "Failed to create RTF document. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleSaveAsHTML = () => {
+    try {
+      const contentElement = document.querySelector('.max-w-4xl');
+      if (!contentElement) return;
+
+      // Clone and clean up the content
+      const clonedContent = contentElement.cloneNode(true) as HTMLElement;
+      
+      // Remove controls and buttons
+      clonedContent.querySelectorAll('.print\\:hidden, .fixed, button').forEach(el => el.remove());
+      
+      // Create full HTML document
+      const htmlContent = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yellowstone & Grand Teton Family Adventure Guide</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        h1 { color: #1e40af; font-size: 2em; margin: 20px 0; }
+        h2 { color: #059669; font-size: 1.5em; margin: 15px 0; }
+        h3 { color: #7c3aed; font-size: 1.2em; margin: 10px 0; }
+        .card { border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; margin: 8px 0; }
+        .badge { background: #f3f4f6; padding: 4px 8px; border-radius: 4px; font-size: 0.75em; }
+        @media print { .page-break-before { page-break-before: always; } }
+    </style>
+</head>
+<body>
+    ${clonedContent.innerHTML}
+</body>
+</html>`;
+
+      const blob = new Blob([htmlContent], { type: 'text/html' });
+      saveAs(blob, 'Yellowstone-Grand-Teton-Guide.html');
+      
+      toast({
+        title: "HTML document saved!",
+        description: "Your trip guide has been downloaded as an HTML document.",
+      });
+    } catch (error) {
+      console.error('Error creating HTML:', error);
+      toast({
+        title: "Error",
+        description: "Failed to create HTML document. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <>
       <style>{`
@@ -166,27 +319,73 @@ const DocumentVersion = () => {
       
       {/* Print Controls - Hidden when printing */}
       <div className="fixed top-4 right-4 z-50 print:hidden">
-        <div className="flex flex-col gap-2 bg-background border rounded-lg p-2 shadow-lg">
+        <div className="flex flex-col gap-2 bg-background border rounded-lg p-2 shadow-lg max-w-xs">
           <Link to="/">
             <Button variant="outline" size="sm" className="w-full">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Guide
             </Button>
           </Link>
-          <Button onClick={handlePrint} variant="default" size="sm" className="w-full">
-            <Printer className="h-4 w-4 mr-2" />
-            Print Document
+          
+          <Separator />
+          
+          <div className="text-xs font-medium text-muted-foreground px-2">Export Options</div>
+          
+          <Button onClick={handleSaveAsWord} variant="default" size="sm" className="w-full">
+            <FileDown className="h-4 w-4 mr-2" />
+            Save as Word (.docx)
           </Button>
-          <Button onClick={handleSavePDF} variant="secondary" size="sm" className="w-full">
-            <Download className="h-4 w-4 mr-2" />
-            Save as PDF
+          
+          <Button onClick={handleSaveAsHTML} variant="secondary" size="sm" className="w-full">
+            <FileText className="h-4 w-4 mr-2" />
+            Save as HTML
           </Button>
+          
+          <Button onClick={handleSaveAsRTF} variant="outline" size="sm" className="w-full">
+            <FileDown className="h-4 w-4 mr-2" />
+            Save as RTF
+          </Button>
+          
           <Button onClick={handleSaveToGoogleDocs} variant="outline" size="sm" className="w-full">
             <FileText className="h-4 w-4 mr-2" />
             Save to Google Docs
           </Button>
+          
+          <Separator />
+          
+          <div className="text-xs font-medium text-muted-foreground px-2">Print Options</div>
+          
+          <Button 
+            onClick={() => setEditMode(!editMode)} 
+            variant={editMode ? "default" : "outline"} 
+            size="sm" 
+            className="w-full"
+          >
+            <Scissors className="h-4 w-4 mr-2" />
+            {editMode ? "Exit Edit Mode" : "Edit Page Breaks"}
+          </Button>
+          
+          <Button onClick={handlePrint} variant="secondary" size="sm" className="w-full">
+            <Printer className="h-4 w-4 mr-2" />
+            Print Document
+          </Button>
+          
+          <Button onClick={handleSavePDF} variant="secondary" size="sm" className="w-full">
+            <Download className="h-4 w-4 mr-2" />
+            Save as PDF
+          </Button>
         </div>
       </div>
+      
+      {/* Page Break Edit Mode Indicator */}
+      {editMode && (
+        <div className="fixed top-4 left-4 z-50 print:hidden">
+          <div className="bg-yellow-100 border border-yellow-300 rounded-lg p-3 text-sm">
+            <div className="font-medium text-yellow-800">Page Break Edit Mode</div>
+            <div className="text-yellow-700">Click between sections to add page breaks</div>
+          </div>
+        </div>
+      )}
       
       {/* Cover Page */}
       <div className="text-center mb-12 print:mb-8">
