@@ -65,14 +65,17 @@ const DocumentVersion = () => {
       console.log('Raw text content length:', textContent.length);
       console.log('First 200 chars:', textContent.substring(0, 200));
       
-      // Instead of filtering by lines, format the content properly
-      // Remove extra whitespace and format for readability
+      // Simple formatting that preserves emojis and content structure
       const formattedContent = textContent
-        .replace(/\s+/g, ' ') // Replace multiple spaces/newlines with single space
-        .replace(/([.!?])\s+/g, '$1\n\n') // Add line breaks after sentences
-        .replace(/([📋🌋🦌🏔️⛰️🔍🎯🎮🏅📅🎒🌡️🐺💎])/g, '\n$1') // Add line breaks before emojis
+        .replace(/\s{2,}/g, ' ') // Replace multiple spaces with single space
+        .replace(/([.!?])\s/g, '$1\n\n') // Add line breaks after sentences
         .replace(/Table of Contents/g, '\n\nTable of Contents\n')
-        .replace(/(Pre-Trip Planning|During Your Trip|Amazing Animals|Amazing Places|Daily Adventures|Games & Activities|Junior Ranger|Packing Checklist)/g, '\n\n$1\n')
+        .replace(/Pre-Trip Planning/g, '\n\nPre-Trip Planning\n')
+        .replace(/During Your Trip/g, '\n\nDuring Your Trip\n')
+        .replace(/Amazing Animals You'll Meet/g, '\n\nAmazing Animals You\'ll Meet\n')
+        .replace(/Amazing Places You'll Visit/g, '\n\nAmazing Places You\'ll Visit\n')
+        .replace(/Junior Ranger Program/g, '\n\nJunior Ranger Program\n')
+        .replace(/Packing Checklist/g, '\n\nPacking Checklist\n')
         .replace(/^\s+/gm, '') // Remove leading spaces from lines
         .replace(/\n{3,}/g, '\n\n') // Replace multiple line breaks with double
         .trim();
