@@ -213,11 +213,13 @@ const DocumentVersion = () => {
     );
   };
 
-  // Alternative Export Formats - Simple approach for Word export
+  // Alternative Export Formats - Fixed Word export
   const handleSaveAsWord = async () => {
     try {
+      console.log('Starting Word export...');
       const contentElement = document.querySelector('.max-w-4xl');
       if (!contentElement) {
+        console.log('No content element found');
         toast({
           title: "Error",
           description: "No content found to export.",
@@ -226,39 +228,55 @@ const DocumentVersion = () => {
         return;
       }
 
-      // Get the text content
+      // Get the text content and clean it up
       const textContent = contentElement.textContent || '';
+      console.log('Text content length:', textContent.length);
       
-      // Create a simple text document that can be saved as .txt and opened in Word
-      const formattedText = textContent
-        .replace(/\s{2,}/g, '\n') // Replace multiple spaces with newlines
-        .replace(/([.!?])\s*\n/g, '$1\n\n') // Add space after sentences
-        .split('\n')
-        .filter(line => line.trim())
-        .filter(line => !line.includes('Print Document') && !line.includes('Save as') && !line.includes('Back to Guide'))
-        .join('\n');
+      if (!textContent.trim()) {
+        toast({
+          title: "Error", 
+          description: "No content to export.",
+          variant: "destructive",
+        });
+        return;
+      }
 
-      // Create blob and download
-      const blob = new Blob([formattedText], { type: 'text/plain' });
+      // Clean and format the text
+      const cleanedContent = textContent
+        .replace(/\s+/g, ' ') // Normalize whitespace
+        .split(' ')
+        .filter(word => word.trim())
+        .filter(word => !['Print', 'Document', 'Save', 'Back', 'Guide', 'PDF', 'HTML', 'RTF', 'Google', 'Docs', 'Edit', 'Page', 'Breaks', 'Exit', 'Mode'].includes(word))
+        .join(' ')
+        .replace(/([.!?])\s+/g, '$1\n\n') // Add line breaks after sentences
+        .replace(/(🏔️|🦌|🌋|📋|🎯|🎮|🏅)/g, '\n\n$1') // Add breaks before emojis
+        .trim();
+
+      console.log('Cleaned content length:', cleanedContent.length);
+
+      // Create and download the file
+      const blob = new Blob([cleanedContent], { type: 'text/plain;charset=utf-8' });
       const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'Yellowstone-Grand-Teton-Guide.txt';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'Yellowstone-Grand-Teton-Guide.txt';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
       URL.revokeObjectURL(url);
       
+      console.log('File download triggered');
+      
       toast({
-        title: "Text file saved!",
-        description: "Your trip guide has been downloaded as a text file. You can open it in Word and format as needed.",
-        duration: 5000,
+        title: "Text file downloaded!",
+        description: "Open the .txt file in Microsoft Word, then use 'Save As' to convert to .docx format.",
+        duration: 6000,
       });
     } catch (error) {
       console.error('Error creating text file:', error);
       toast({
         title: "Error",
-        description: "Failed to create document. Please try again.",
+        description: `Failed to export: ${error.message}`,
         variant: "destructive",
       });
     }
@@ -814,40 +832,43 @@ const DocumentVersion = () => {
               funActivity: "See real dinosaur skeletons that are millions of years old!"
             }
           ].map((day) => (
-            <Card key={day.day} className="border">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <CardTitle className="text-xl font-bold text-foreground">
-                      Day {day.day} - {day.title}
-                    </CardTitle>
-                    <div className="flex gap-2 mt-2">
-                      <Badge variant="outline">{day.date}</Badge>
-                      <Badge className="bg-mountain text-primary-foreground">{day.location}</Badge>
+            <div key={day.day}>
+              <PageBreakDivider index={day.day + 4} />
+              <Card className="border">
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <CardTitle className="text-xl font-bold text-foreground">
+                        Day {day.day} - {day.title}
+                      </CardTitle>
+                      <div className="flex gap-2 mt-2">
+                        <Badge variant="outline">{day.date}</Badge>
+                        <Badge className="bg-mountain text-primary-foreground">{day.location}</Badge>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <h4 className="font-semibold text-foreground mb-2">📍 What You'll See:</h4>
-                    <ul className="space-y-1 text-sm text-muted-foreground">
-                      {day.highlights.map((highlight, index) => (
-                        <li key={index} className="flex items-start">
-                          <span className="text-sunset mr-2">•</span>
-                          {highlight}
-                        </li>
-                      ))}
-                    </ul>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                      <h4 className="font-semibold text-foreground mb-2">📍 What You'll See:</h4>
+                      <ul className="space-y-1 text-sm text-muted-foreground">
+                        {day.highlights.map((highlight, index) => (
+                          <li key={index} className="flex items-start">
+                            <span className="text-sunset mr-2">•</span>
+                            {highlight}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div className="bg-sunset/10 border border-sunset/20 rounded-lg p-3">
+                      <h4 className="font-semibold text-sunset mb-2">🎯 Special Activity:</h4>
+                      <p className="text-sm text-muted-foreground">{day.funActivity}</p>
+                    </div>
                   </div>
-                  <div className="bg-sunset/10 border border-sunset/20 rounded-lg p-3">
-                    <h4 className="font-semibold text-sunset mb-2">🎯 Special Activity:</h4>
-                    <p className="text-sm text-muted-foreground">{day.funActivity}</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </div>
           ))}
         </div>
       </section>
