@@ -239,10 +239,10 @@ const DocumentVersion = () => {
         </CardContent>
       </Card>
 
-      <Separator className="my-8 print:my-4 print:page-break-before" />
+      <Separator className="my-8 print:my-4 page-break-before" />
 
       {/* Section 1: Park Overview */}
-      <section className="mb-12 print:mb-8 print:page-break-before">>
+      <section className="mb-12 print:mb-8 page-break-before">
         <h1 className="text-3xl font-bold text-center mb-8 text-foreground">🌋 Welcome to Your Amazing Adventure!</h1>
         
         <div className="grid md:grid-cols-2 gap-8 mb-8">
