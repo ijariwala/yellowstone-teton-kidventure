@@ -28,7 +28,8 @@ const WildlifeCard = ({ name, image, funFact, likelihood, safetyTip }: WildlifeC
         <img 
           src={image} 
           alt={name}
-          className="w-full h-48 object-cover"
+          className="w-full h-48 object-cover object-center"
+          style={{ objectPosition: 'center 30%' }}
         />
         <div className={`absolute top-2 right-2 px-3 py-1 rounded-full text-sm font-medium ${getLikelihoodColor(likelihood)}`}>
           {likelihood}
