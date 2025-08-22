@@ -160,6 +160,10 @@ const DocumentVersion = () => {
 
   // Manual Page Break Controls
   const addPageBreak = (index: number) => {
+    if (pageBreaks.includes(index)) {
+      removePageBreak(index);
+      return;
+    }
     setPageBreaks(prev => [...prev, index].sort((a, b) => a - b));
     toast({
       title: "Page break added!",
@@ -175,53 +179,86 @@ const DocumentVersion = () => {
     });
   };
 
-  // Alternative Export Formats
+  // Create visual page break component
+  const PageBreakDivider = ({ index, visible = true }: { index: number; visible?: boolean }) => {
+    const hasBreak = pageBreaks.includes(index);
+    
+    if (!editMode && !hasBreak) return null;
+    
+    return (
+      <div 
+        className={`relative my-4 ${editMode ? 'cursor-pointer' : ''} ${visible ? '' : 'print:hidden'}`}
+        onClick={() => editMode && addPageBreak(index)}
+      >
+        {editMode && (
+          <div className={`border-2 border-dashed rounded-lg p-4 transition-all hover:bg-blue-50 ${
+            hasBreak ? 'border-blue-500 bg-blue-50' : 'border-gray-300 hover:border-blue-400'
+          }`}>
+            <div className="text-center text-sm text-gray-600">
+              {hasBreak ? (
+                <span className="text-blue-600 font-medium">✂️ Page Break Added - Click to Remove</span>
+              ) : (
+                <span>📄 Click to Add Page Break Here</span>
+              )}
+            </div>
+          </div>
+        )}
+        {hasBreak && !editMode && (
+          <div className="page-break-before text-center text-xs text-gray-400 print:hidden">
+            --- Page Break ---
+          </div>
+        )}
+        {hasBreak && <div className="page-break-before"></div>}
+      </div>
+    );
+  };
+
+  // Alternative Export Formats - Simple approach for Word export
   const handleSaveAsWord = async () => {
     try {
       const contentElement = document.querySelector('.max-w-4xl');
-      if (!contentElement) return;
+      if (!contentElement) {
+        toast({
+          title: "Error",
+          description: "No content found to export.",
+          variant: "destructive",
+        });
+        return;
+      }
 
-      // Extract text content
+      // Get the text content
       const textContent = contentElement.textContent || '';
-      const sections = textContent.split('\n\n').filter(s => s.trim());
+      
+      // Create a simple text document that can be saved as .txt and opened in Word
+      const formattedText = textContent
+        .replace(/\s{2,}/g, '\n') // Replace multiple spaces with newlines
+        .replace(/([.!?])\s*\n/g, '$1\n\n') // Add space after sentences
+        .split('\n')
+        .filter(line => line.trim())
+        .filter(line => !line.includes('Print Document') && !line.includes('Save as') && !line.includes('Back to Guide'))
+        .join('\n');
 
-      // Create Word document
-      const doc = new Document({
-        sections: [{
-          properties: {},
-          children: sections.map(section => {
-            const trimmed = section.trim();
-            if (trimmed.includes('Ultimate Yellowstone') || trimmed.includes('Amazing Adventure')) {
-              return new Paragraph({
-                children: [new TextRun({ text: trimmed, bold: true, size: 32 })],
-                heading: HeadingLevel.HEADING_1,
-              });
-            } else if (trimmed.includes('Table of Contents') || trimmed.includes('Pre-Trip') || trimmed.includes('During Your Trip')) {
-              return new Paragraph({
-                children: [new TextRun({ text: trimmed, bold: true, size: 24 })],
-                heading: HeadingLevel.HEADING_2,
-              });
-            } else {
-              return new Paragraph({
-                children: [new TextRun({ text: trimmed })],
-              });
-            }
-          }),
-        }],
-      });
-
-      const buffer = await Packer.toBuffer(doc);
-      saveAs(new Blob([buffer]), 'Yellowstone-Grand-Teton-Guide.docx');
+      // Create blob and download
+      const blob = new Blob([formattedText], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Yellowstone-Grand-Teton-Guide.txt';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
       
       toast({
-        title: "Word document saved!",
-        description: "Your trip guide has been downloaded as a Word document.",
+        title: "Text file saved!",
+        description: "Your trip guide has been downloaded as a text file. You can open it in Word and format as needed.",
+        duration: 5000,
       });
     } catch (error) {
-      console.error('Error creating Word document:', error);
+      console.error('Error creating text file:', error);
       toast({
         title: "Error",
-        description: "Failed to create Word document. Please try again.",
+        description: "Failed to create document. Please try again.",
         variant: "destructive",
       });
     }
@@ -438,7 +475,9 @@ const DocumentVersion = () => {
         </CardContent>
       </Card>
 
-      <Separator className="my-8 print:my-4 page-break-before" />
+      <PageBreakDivider index={1} />
+
+      <Separator className="my-8 print:my-4" />
 
       {/* Section 1: Park Overview */}
       <section className="mb-12 print:mb-8 page-break-before">
@@ -520,6 +559,8 @@ const DocumentVersion = () => {
         </div>
       </section>
 
+      <PageBreakDivider index={2} />
+
       <Separator className="my-8 print:my-4" />
 
       {/* Section 2: Wildlife Guide */}
@@ -598,6 +639,8 @@ const DocumentVersion = () => {
         </Card>
       </section>
 
+      <PageBreakDivider index={3} />
+
       <Separator className="my-8 print:my-4" />
 
       {/* Section 3: Amazing Attractions */}
@@ -675,6 +718,8 @@ const DocumentVersion = () => {
           ))}
         </div>
       </section>
+
+      <PageBreakDivider index={4} />
 
       <Separator className="my-8 print:my-4" />
 
